@@ -69,7 +69,7 @@ class PokemonController extends Controller
             return response()->json([
                 'status' => 'success',
                 'data' => $pokemon
-            ], 201);
+            ], 200);
         }
         catch (\Exception $e)
         {
