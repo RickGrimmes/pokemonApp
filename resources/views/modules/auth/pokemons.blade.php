@@ -64,10 +64,9 @@
                                         <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#Detalles{{ $pokemon->id }}">Detalles</button>
                                     </li>
                                     <li class="mb-2">
-                                        <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#Editar">Editar</button>
-                                    </li>
+                                      <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#Editar{{$pokemon->id}}">Editar</button>                                    </li>
                                     <li class="mb-2">
-                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#Eliminar">Eliminar</button>
+                                        <button type="button" class="btn btn-sm btn-danger" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#Eliminar{{$pokemon->id}}" >Eliminar</button>
                                     </li>
                                 </ul>
                             </div>
@@ -90,25 +89,93 @@
       </div>
     </div>
 
+    <!-- Modificar el Pokémon -->
+    @foreach ($items as $pokemon)
+    <div class="modal fade" id="Editar{{ $pokemon->id }}" tabindex="-1" aria-labelledby="DetallesLabel{{ $pokemon->id }}" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body" style="font-family: 'Press Start 2P', cursive;">
+            <form action="{{ route('update', $pokemon->id) }}" method="POST">
+              @csrf
+              @method('PUT')
+              <div class="mb-3">
+                  <label for="name" class="form-label">Nombre:</label>
+                  <input type="text" name="name" id="name" class="form-control" value="{{ $pokemon->name }}" required>
+              </div>
+              <div class="mb-3">
+                  <label for="type" class="form-label">Tipo:</label>
+                  <input type="text" name="type" id="type" class="form-control" value="{{ $pokemon->type }}" required>
+              </div>
+              <div class="mb-1">
+                  <label for="lp" class="form-label">Puntos De Vida:</label>
+                  <input type="number" name="lp" id="lp" class="form-control" value="{{ $pokemon->lp }}" required>
+              </div>
+              <div class="mb-1">
+                  <label for="evolutionPhase" class="form-label">No. De Evolución:</label>
+                  <input type="number" name="evolutionPhase" id="evolutionPhase" value="{{ $pokemon->evolutionPhase }}" class="form-control" required>
+              </div>
+              <div class="d-grid gap-2">
+                <button class="btn btn-outline-success" type="submit" style="font-family: 'Press Start 2P', cursive;">Actualizar Pokemon</button>
+                <button class="btn btn-outline-danger" data-bs-dismiss="modal" type="button" style="font-family: 'Press Start 2P', cursive;">Cancelar Accion</button>
+              </div>
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    @endforeach
+<!-- Eliminar el Pokémon -->
+@foreach ($items as $pokemon)
+    <div class="modal fade" id="Eliminar{{ $pokemon->id }}" tabindex="-1" aria-labelledby="DetallesLabel{{ $pokemon->id }}" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <form action="{{ route('delete', $pokemon->id) }}" method="POST">
+              @csrf
+              @method('DELETE')
+              <h6 class="text-center" style="font-family: 'Press Start 2P', cursive;">Estas A Punto De Abandonar A <h6 style="color:blue;font-family: 'Press Start 2P', cursive;">{{$pokemon->name}}</h6> </h6>
+              <div class="d-grid gap-2">
+                <button class="btn btn-outline-danger" type="submit" style="font-family: 'Press Start 2P', cursive;">Abandonar Pokemon</button>
+                <button class="btn btn-outline-primary" data-bs-dismiss="modal" type="button" style="font-family: 'Press Start 2P', cursive;">Cancelar Accion</button>
+              </div>
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    @endforeach
 <!-- Modales de Detalles de Pokémon -->
 @foreach ($items as $pokemon)
 <div class="modal fade" id="Detalles{{ $pokemon->id }}" tabindex="-1" aria-labelledby="DetallesLabel{{ $pokemon->id }}" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="DetallesLabel{{ $pokemon->id }}">{{ $pokemon->name }} - Detalles</h5>
+        <h5 class="modal-title text-center" id="DetallesLabel{{ $pokemon->id }}" style="font-family: 'Press Start 2P', cursive;">Estadisticas</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <ul>
-          <li><strong>Nombre:</strong> {{ $pokemon->name }}</li>
-          <li><strong>Tipo:</strong> {{ $pokemon->type }}</li>
-          <li><strong>HP:</strong> {{ $pokemon->lp }}</li>
-          <li><strong>Fase De Evolucion:</strong> {{ $pokemon->evolutionPhase }}</li>
-        </ul>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      <div class="modal-body" style="font-family: 'Press Start 2P', cursive;">
+     <table class="table">
+      <thead class="text-center">
+        <tr>
+          <th scope="col-2">{{$pokemon->name}}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Tipo</th>
+          <td>{{$pokemon->type}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Puntos De Vida</th>
+          <td>{{$pokemon->lp}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Fase De Evolucion</th>
+          <td>{{$pokemon->evolutionPhase}}</td>
+        </tr>
+      </tbody>
+    </table>
       </div>
     </div>
   </div>
@@ -119,31 +186,31 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Pokémon</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body item-center">
-        <form action="{{ route('create') }}" method="POST">
+      <div class="modal-body item-center" style="font-family: 'Press Start 2P', cursive;">
+        <form action="{{ route('create') }}" method="POST" style="font-family: 'Press Start 2P', cursive;">
           @csrf
           @method('POST')
           <div class="mb-3">
-              <label for="name" class="form-label">Escribe el nombre</label>
+              <label for="name" class="form-label" style="font-family: 'Press Start 2P', cursive;">Nombre:</label>
               <input type="text" name="name" id="name" class="form-control" required>
           </div>
           <div class="mb-3">
-              <label for="type" class="form-label">Escribe el tipo</label>
+              <label for="type" class="form-label" style="font-family: 'Press Start 2P', cursive;">Tipo:</label>
               <input type="text" name="type" id="type" class="form-control" required>
           </div>
           <div class="mb-1">
-              <label for="lp" class="form-label">Escribe los puntos de vida (LP)</label>
+              <label for="lp" class="form-label" style="font-family: 'Press Start 2P', cursive;">Puntos De Vida:</label>
               <input type="number" name="lp" id="lp" class="form-control" required>
           </div>
           <div class="mb-1">
-              <label for="evolutionPhase" class="form-label">Escribe la fase de evolución</label>
+              <label for="evolutionPhase" class="form-label" style="font-family: 'Press Start 2P', cursive;">No. Evolucion:</label>
               <input type="number" name="evolutionPhase" id="evolutionPhase" class="form-control" required>
           </div>
-          <button type="submit" class="btn btn-primary mt-3">Agregar</button>
+          <div class="d-grid gap-2">
+            <button class="btn btn-outline-success" type="submit" style="font-family: 'Press Start 2P', cursive;">Añadir Pokemon</button>
+            <button class="btn btn-outline-danger" data-bs-dismiss="modal" type="button" style="font-family: 'Press Start 2P', cursive;">Cancelar Accion</button>
+          </div>
+          
       </form>
       
       </div>

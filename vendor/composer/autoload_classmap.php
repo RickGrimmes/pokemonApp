@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Http\\Controllers\\AuthController' => $baseDir . '/app/Http/Controllers/AuthController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\PokemonController' => $baseDir . '/app/Http/Controllers/PokemonController.php',
     'App\\Models\\Pokemon' => $baseDir . '/app/Models/Pokemon.php',
