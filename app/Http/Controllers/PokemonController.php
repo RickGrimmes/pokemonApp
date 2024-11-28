@@ -50,7 +50,6 @@ class PokemonController extends Controller
                         // Si no se encuentra la imagen, se agrega una imagen por defecto
                         $pokemon->image_url = "https://raw.githubusercontent.com/RickGrimmes/pokemon-img/refs/heads/main/img/default.png";
                     }
-
                     return response()->json([
                         'status' => 'success',
                         'data' => $pokemon
@@ -91,10 +90,11 @@ class PokemonController extends Controller
                 'lp' => $request->lp,
                 'evolutionPhase' => $request->evolutionPhase
             ]);
-            return response()->json([
-                'status' => 'success',
-                'data' => $pokemon
-            ], 200);
+            return to_route('pokemons');
+            #return response()->json([
+            #    'status' => 'success',
+            #    'data' => $pokemon
+            #], 200);
         }
         catch (\Exception $e)
         {
@@ -117,10 +117,11 @@ class PokemonController extends Controller
                 $pokemon->lp = $request->lp;
                 $pokemon->evolutionPhase = $request->evolutionPhase;
                 $pokemon->save();
-                return response()->json([
-                    'status' => 'success',
-                    'data' => $pokemon
-                ], 200);
+                return to_route('pokemons');
+                #return response()->json([
+                #    'status' => 'success',
+                #    'data' => $pokemon
+                #], 200);
             }
             else
             {
@@ -147,10 +148,11 @@ class PokemonController extends Controller
             if ($pokemon)
             {
                 $pokemon->delete();
-                return response()->json([
-                    'status' => 'success',
-                    'data' => $pokemon
-                ], 200);
+                return to_route('pokemons');
+                #return response()->json([
+                #    'status' => 'success',
+                #    'data' => $pokemon
+                #], 200);
             }
             else
             {
