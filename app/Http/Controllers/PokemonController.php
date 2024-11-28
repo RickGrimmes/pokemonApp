@@ -34,10 +34,35 @@ class PokemonController extends Controller
             $pokemon = Pokemon::find($id);
             if ($pokemon)
             {
-                return response()->json([
-                    'status' => 'success',
-                    'data' => $pokemon
-                ], 200);
+                try
+                {
+                    // Convertir el nombre del Pokémon a minúsculas
+                    $pokemonNameLower = strtolower($pokemon->name);
+
+                    // Crear la URL de la imagen
+                    $imageUrl = "https://raw.githubusercontent.com/RickGrimmes/pokemon-img/refs/heads/main/img/{$pokemonNameLower}.png";
+
+                    if ($imageUrl)
+                    {
+                        // Agregar la URL de la imagen al objeto Pokémon
+                        $pokemon->image_url = $imageUrl;
+                    } else {
+                        // Si no se encuentra la imagen, se agrega una imagen por defecto
+                        $pokemon->image_url = "https://raw.githubusercontent.com/RickGrimmes/pokemon-img/refs/heads/main/img/default.png";
+                    }
+
+                    return response()->json([
+                        'status' => 'success',
+                        'data' => $pokemon
+                    ], 200);
+                }
+                catch (\Exception $e)
+                {
+                    return response()->json([
+                        'status' => 'error',
+                        'error' => 'Pokemon img not found :c'
+                    ], 404);
+                }
             }
             else
             {
