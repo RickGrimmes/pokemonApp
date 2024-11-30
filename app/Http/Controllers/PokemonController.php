@@ -84,10 +84,17 @@ class PokemonController extends Controller
     {
         try
         {
+            // Validar los datos de la solicitud
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'type' => 'required|string|max:255',
+                'lp' => 'required|integer|max:200',
+                'evolutionPhase' => 'required|integer|max:255',
+            ]);
             $pokemon = Pokemon::create([
                 'name' => $request->name,
                 'type' => $request->type,
-                'lp' => $request->lp,
+                'lp' => $request->lp, 
                 'evolutionPhase' => $request->evolutionPhase
             ]);
             return to_route('pokemons');
